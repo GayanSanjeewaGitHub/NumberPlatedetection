@@ -1,0 +1,11 @@
+# Usage: pip install -r requirements.txt
+opencv-python
+pillow
+requests
+paddleocr
+seaborn
+paddlehub
+
+paddlepaddle
+torch
+torchvision
