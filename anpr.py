@@ -6,6 +6,7 @@ import datetime
 from transform import four_point_transform
 import re
 import copy
+import mysql.connector
 #from lpfix import lpfix
 
 from PIL import Image
@@ -24,6 +25,16 @@ path = "./dnn_superres/ESPCN_x4.pb"
 sr.readModel(path)
 sr.setModel("espcn", 4) # set the model by passing the value and the upsampling ratio
 
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="Admin@123",
+  database="VehicleMonitor"
+)
+mycursor = mydb.cursor()
+sql = "INSERT INTO numberplate (location, timeStamp, numberPlate, blackListed) VALUES (%s, %s, %s, %s)"
+
 # multilingual OCR toolkits based on PaddlePaddle
 from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, use_gpu=True, lang='en', show_log=False) # need to run only once to download and load model into memory
@@ -40,9 +51,9 @@ from blacklist import search
 optimization = True
 
 streams=( # set links for ip cams and different names for each cam
-    ['./video/1.mp4','video 1'],
-    ['./video/2.mp4','video 2'],
-    ['./video/3.mp4','video 3'],
+    ['./video/1.mp4','Gate 1'],
+    ['./video/2.mp4','Gate 2'],
+    ['./video/3.mp4','Gate 3'],
     )
 
 # font and colors for img info
@@ -167,13 +178,13 @@ def frame():
                                 text=text+textsub
 
                     pattern = re.compile('[\W]')
-                    text=pattern.sub('', text)
+                    text=pattern.sub('', text) #non word replace
                     text=text.replace("O","0")
                     text=text.replace("_","")
 
                     timestampcheck = now.strftime('%Y%m%d%H%M') # timestamp for duplicate LP check
 
-                    original2 = copy.deepcopy(original)
+                    original2 = copy.deepcopy(original)# copied recursively
                     newlp = False
                     
                     if (len(text)>3) and (len(text)<10): # ocr recognition rules
@@ -217,7 +228,11 @@ def frame():
                             lproi = cv2.resize(lproi,(105,22), interpolation=cv2.INTER_LINEAR) # resize all lproi at same size
                             cv2.imwrite(str(folder)+str(timestamp)+'-'+str(cam)+'-'+str(text)+'.jpg',lproiorig) # write lproi to folder
 
+                            val = (cam, timestamp,text, False )
+                            mycursor.execute(sql, val)
+                            mydb.commit()
                             print (timestamp,' ',cam,' ',text) # print data to console
+
                                                         
                             search(img,lproi,cam,now,text) # blacklist check
 
@@ -246,6 +261,8 @@ if __name__ == "__main__":
     for s in streams:
         original[s[1]] = {}
 
+    print("|||||||||||||||||||||||||||||||||||||||||||||||||")
+    print(original)
     thread_list = []
     frames = []
     

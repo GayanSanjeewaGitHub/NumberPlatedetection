@@ -9,13 +9,14 @@ from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email import encoders
 
-port = 587  # For SSL
+port = 587  # For SSL 465 else 587
 
 # change to your email account settings
-smtp_server = 'smtp.domain.com' # mail smtp
+smtp_server = 'smtp.gmail.com' # mail smtp
 sender = 'gsanjeewa1111@gmail.com'  # Enter your address
-receiver = 'gsanjeewa1111@gmail.com'  # Enter receiver address
+receiver = 'kkgsanjeewac7@gmail.com'  # Enter receiver address
 password = 'ibrykrykazhuojzq' # mail password
+
 
 blacklist = [] # blacklist list
 infile = open('blacklist.txt','r') # open blacklist.txt
