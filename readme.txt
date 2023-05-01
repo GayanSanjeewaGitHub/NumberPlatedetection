@@ -1,4 +1,3 @@
-******************************************************************************
 
 # Live multi video real time ANPR Computer vision app
 
