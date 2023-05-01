@@ -29,7 +29,7 @@ sr.setModel("espcn", 4) # set the model by passing the value and the upsampling 
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="Admin@123",
+  password="password",
   database="VehicleMonitor"
 )
 mycursor = mydb.cursor()
