@@ -13,10 +13,13 @@ port = 587  # For SSL 465 else 587
 
 # change to your email account settings
 smtp_server = 'smtp.gmail.com' # mail smtp
-sender = 'gsanjeewa1111@gmail.com'  # Enter your address
-receiver = 'kkgsanjeewac7@gmail.com'  # Enter receiver address
-password = 'ibrykrykazhuojzq' # mail password
+sender = 'xxxxxxx@gmail.com'  # Enter your address
+receiver = 'xxxxxx@gmail.com'  # Enter receiver address
+password = 'ixxxxxxuojzq' # mail password
 
+# this password is not your gmail account password, this password has to create via gmail account setting , under 'App Password'(search for it)
+#need to add two steps authenticator ,and other chnages in sending email, refer some docs to setup this seperately from your account
+# this is for gmail by the way
 
 blacklist = [] # blacklist list
 infile = open('blacklist.txt','r') # open blacklist.txt
